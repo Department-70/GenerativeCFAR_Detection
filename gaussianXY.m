@@ -24,7 +24,7 @@ figSaveTitle = 1;
 filenameFig = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\figData\gaussian\';
 
 % name of file
-figNameTitle = 'gaussianPlT';
+figNameTitleXY = 'gaussianPlTXY';
 %%%%%%%%%%%%%%%%
 
 % load the data
@@ -51,7 +51,8 @@ for iSim = 1:dimSim
     for iEv = 1:dimEv
         for iPl = 1:dimPl
             % calculate the absolute value
-            absData(iDimSimEv,iPl) = sqrt((real(data(iSim,iEv,iPl)))^2 + (imag(data(iSim,iEv,iPl)))^2);
+            reData(iDimSimEv,iPl) = real(data(iSim,iEv,iPl));
+            imData(iDimSimEv,iPl) = imag(data(iSim,iEv,iPl)); 
         end % for iPl = 1:dimPl
         iDimSimEv = iDimSimEv + 1;
     end % for iEv = 1:dimEv
@@ -66,26 +67,47 @@ for iPl = 1:dimPl
     iPlStr = num2str(iPl);
 
     %  obtain parameters used in fitting
-    pd = fitdist(absData(:,iPl),dist);
+    pd = fitdist(reData(:,iPl),dist);
 
     % plot histogram
     %===
     figure(iPl)
-    hC = histfit(absData(:,iPl),nbins,dist);
+
+    %== Left subplot
+    ax1 = subplot(1,2,1); % Left subplot
+    hC = histfit(ax1, reData(:,iPl),nbins,dist);
 
     % plot with Y-axis in percentages 
-    %arrayfun(@(hPr) set(hPr,'YData',hPr.YData/sum(hPr.YData)),hC);
     yt = get(gca, 'YTick');
-    set(gca, 'YTick', yt, 'YTickLabel', round(100*yt/numel(absData(:,iPl)),2))
+    set(gca, 'YTick', yt, 'YTickLabel', round(100*yt/numel(reData(:,iPl)),2))
 
     % color of the bins
     hC(1).FaceColor = [.8 .8 1];
 
-    title(['distribution: ' dist ', \mu = ' num2str(pd.mu,'%5.4f') ', ' ...
+    title(ax1, ['distribution: ' dist ', \mu = ' num2str(pd.mu,'%5.4f') ', ' ...
          ' \sigma = ' num2str(pd.sigma,'%5.4f')]);
     ylabel('% of total data');
-    xlabel('\surd(x^2 + y^2)');
+    xlabel('X');
     grid on;
+    %== 
+
+    %== Right  subplot
+    ax2 = subplot(1,2,1); % Left subplot
+    hC = histfit(ax2, reData(:,iPl),nbins,dist);
+
+    % plot with Y-axis in percentages 
+    yt = get(gca, 'YTick');
+    set(gca, 'YTick', yt, 'YTickLabel', round(100*yt/numel(reData(:,iPl)),2))
+
+    % color of the bins
+    hC(1).FaceColor = [.8 .8 1];
+
+    title(ax2, ['distribution: ' dist ', \mu = ' num2str(pd.mu,'%5.4f') ', ' ...
+         ' \sigma = ' num2str(pd.sigma,'%5.4f')]);
+    ylabel('% of total data');
+    xlabel('Y');
+    grid on;
+    %== 
     %===
 
     % to save (1) or not to save (0) the figures with Titles

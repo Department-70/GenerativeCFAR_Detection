@@ -59,18 +59,30 @@ end % for iSim = 1:dimSim
 
 
 
-%% plot histogram
+%% plot histogram 
 % 
-for iPl = 1:dimPl
+for iPl = 1:1%dimPl
+    iPl = 10;
     % convert tarIn to str
     iPlStr = num2str(iPl);
+
     %  obtain parameters used in fitting
-    pd = fitdist(absData(iPl),dist);
-    h = histfit(absData(iPl),nbins,dist);
-    histfit(absData(iPl),nbins,dist);
+    pd = fitdist(absData(:,iPl),dist);
+
+    % plot histogram
+    %===
+    figure(iPl)
+    h = histfit(absData(:,iPl),nbins,dist);
+
+    % color of the bins
     h(1).FaceColor = [.8 .8 1];
-    title('Left Subplot');
+
+    title(['distribution: ' dist ', \mu = ' num2str(pd.mu,'%5.4f') ', ' ...
+         ' \sigma = ' num2str(pd.sigma,'%5.4f')]);
+    ylabel('count');
+    xlabel('\s(x^2 + y^2)');
     grid on;
+    %===
 
     % to save (1) or not to save (0) the figures with Titles
     if figSaveTitle == 1
