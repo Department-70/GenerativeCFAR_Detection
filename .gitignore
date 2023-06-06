@@ -140,6 +140,8 @@ training/
 *.mat
 *.gif
 *.png
+*.csv
+*.asv
 data/
 
 pytorch_full_game/*.json

@@ -1,6 +1,9 @@
 % This program plots histograms with fitting.
 % Created by Lesya on May 31, 2023 at 14:00 UTC
 
+%% creates
+%   use saved data or create a new dataset
+
 %% Input: 
 %     dist is a distribution: normal, or Generalized Pareto (threshold 0),
 %        or Gamma (K-distribution) 
@@ -13,6 +16,9 @@ close all; clear all;
 
 % adjust 
 %%%%%%%%%%%%%%%% 
+% for used saved data (0) or run new one (1)
+usedOrNew = 0;
+
 % choose #bins for hist and distrib
 dist = 'normal';
 nbins = 50;
@@ -25,39 +31,63 @@ filenameFig = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\figData\
 
 % name of file
 figNameTitle = 'gaussianPlT';
+
+% data path for loading preprocced data
+dataPathSavedData = 'gaussian';
+
+% data path for loading original data
+dataPathOrigData = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\training-data-gaussian.mat';
 %%%%%%%%%%%%%%%%
 
-% load the data
-load('C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\training-data-gaussian.mat')
-
-%% data preparation
-%===
-% dim for simulation
-dimSim = size(data,1);
-
-% dim for events
-dimEv = size(data,2);
-
-% dim for pulses
-dimPl = size(data,3);
-
-% dimSim * dimEv
-dimSimEv = dimSim * dimEv; 
-% index for dimSimEv
-iDimSimEv = 1;
-%===
-% convert 3 dim into two dim
-for iSim = 1:dimSim
-    for iEv = 1:dimEv
-        for iPl = 1:dimPl
-            % calculate the absolute value
-            absData(iDimSimEv,iPl) = sqrt((real(data(iSim,iEv,iPl)))^2 + (imag(data(iSim,iEv,iPl)))^2);
-        end % for iPl = 1:dimPl
-        iDimSimEv = iDimSimEv + 1;
-    end % for iEv = 1:dimEv
-end % for iSim = 1:dimSim
-
-
+%% Input parameters 
+%%% use saved data or create a new dataset
+switch usedOrNew 
+    case 0 % used saved data
+        load([dataPathSavedData '.mat']);     
+    case 1 % create a new dataset  
+        % load the data
+        load(dataPathOrigData)
+        
+        %% data preparation
+        %===
+        % dim for simulation
+        dimSim = size(data,1);
+        
+        % dim for events
+        dimEv = size(data,2);
+        
+        % dim for pulses
+        dimPl = size(data,3);
+        
+        % dimSim * dimEv
+        dimSimEv = dimSim * dimEv; 
+        % index for dimSimEv
+        iDimSimEv = 1;
+        %===
+        % convert 3 dim into two dim
+        for iSim = 1:dimSim
+            for iEv = 1:dimEv
+                for iPl = 1:dimPl
+                    % calculate the absolute value
+                    absData(iDimSimEv,iPl) = sqrt((real(data(iSim,iEv,iPl)))^2 + (imag(data(iSim,iEv,iPl)))^2);
+                end % for iPl = 1:dimPl
+                iDimSimEv = iDimSimEv + 1;
+            end % for iEv = 1:dimEv
+        end % for iSim = 1:dimSim
+        
+        %% save 
+        %%% csv
+        T = array2table(absData);
+        
+        % save
+        writetable(T,[dataPathSavedData '.csv'])
+        %%%
+        % mat
+        save([dataPathSavedData '.mat'], 'absData', 'dimPl');
+    otherwise
+        error('Unexpected inputs')
+end % switch usedOrNew
+%%%
 
 %% plot histogram 
 % 
