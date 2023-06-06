@@ -145,3 +145,4 @@ training/
 data/
 
 pytorch_full_game/*.json
+*.asv

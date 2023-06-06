@@ -112,7 +112,7 @@ for iPl = 1:dimPl
     hC(1).FaceColor = [.8 .8 1];
 
     title(['distribution: ' dist ', \mu = ' num2str(pd.mu,'%5.4f') ', ' ...
-         ' \sigma = ' num2str(pd.sigma,'%5.4f')]);
+         ' \sigma = ' num2str(pd.sigma,'%5.4f') ', Pl.' iPlStr]);
     ylabel('% of total data');
     xlabel('\surd(x^2 + y^2)');
     grid on;
