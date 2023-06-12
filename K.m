@@ -12,13 +12,20 @@
 %        Titles
 %     filenameFig is the path where to save the figures
 %     figNameTitle is the name of the fig with title 
+%     dataPathOrigData is the path to the dataset
+%     difStat is increment for different statistics
+%     dataPathSavedData is the name of the file where to save information
+%       about the group selection 
+%     dataPathSavedDataAbs is the first part of the name of the file where to save data
+%     extChoiseDataset is switcher to the needed fomat for data saving: 
+%        to mat if 0; csv and mat if 1, csv if 2
 
 close all; clear all;
 
 % adjust 
 %%%%%%%%%%%%%%%% 
 % for used saved data (0) or run new one (1)
-usedOrNew = 1;
+usedOrNew = 0;
 
 % increment for different statistics
 difStat = 10000;
@@ -41,7 +48,7 @@ figNameTitle = 'KPlT';
 
 % switcher to the needed fomat for data saving:
 %    to mat if 0; csv and mat if 1, csv if 2
-extChoiseDataset = 0;
+extChoiseDataset = 1;
 
 %= data path for loading preprocced data
 dataPathSavedData = 'KInf';
@@ -65,9 +72,9 @@ end % if usedOrNew == 1
 % load help file
 load([dataPathSavedData '.mat'])
 
-for iFile = 1:1%k
+for iFile = 1:k
     % load a file
-    load([dataPathSavedData name1{iFile} '_' name2{iFile} '.mat']);     
+    load([dataPathSavedDataAbs name1{iFile} '_' name2{iFile} '.mat']);     
 
     for iPl = 1:dimPl
         % convert tarIn to str
@@ -88,10 +95,10 @@ for iFile = 1:1%k
         % color of the bins
         hC(1).FaceColor = [.8 .8 1];
     
-        title(['distr.: ' distFig ', k = ' num2str(pd.k,'%5.4f') ', ' ...
-             ' \sigma = ' num2str(pd.sigma,'%5.4f') ', ' ...
-             ' \theta = ' num2str(pd.theta,'%2.1f') ', Pl.' iPlStr ', gr. '...
-             name1{k} '-' name2{k}]);
+        title(['distr.: ' distFig ', ' ...
+             ' a = ' num2str(pd.a,'%5.4f') ', ' ...
+             ' b = ' num2str(pd.b,'%5.4f') ', Pl.' iPlStr ', gr. '...
+             name1{iFile} '-' name2{iFile}]);
         ylabel('% of total data');
         xlabel('\surd(Re(data)^2 + Im(data)^2)');
         grid on;
@@ -99,12 +106,12 @@ for iFile = 1:1%k
     
         % to save (1) or not to save (0) the figures with Titles
         if figSaveTitle == 1
-            savefig(strcat(filenameFig, figNameTitle, name1{k}, '_',...
-                    name2{k}, iPlStr, '.fig')); % fig format
-            saveas(gcf, strcat(filenameFig, figNameTitle, name1{k}, '_',...
-                    name2{k},  iPlStr, '.jpg')); % jpg format;
+            savefig(strcat(filenameFig, figNameTitle, name1{iFile}, '_',...
+                    name2{iFile}, 'Pl', iPlStr, '.fig')); % fig format
+            saveas(gcf, strcat(filenameFig, figNameTitle, name1{iFile}, '_',...
+                    name2{iFile}, 'Pl', iPlStr, '.jpg')); % jpg format;
                % gcf means to save current fig
         end % if figSaveTitle == 1
     end % for iPl = 1:dimPl
-
+    clear absData;
 end % iFile = 1:k
