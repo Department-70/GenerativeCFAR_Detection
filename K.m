@@ -24,38 +24,38 @@ usedOrNew = 1;
 difStat = 10000;
 
 % choose #bins for hist and distrib
-dist = 'generalized pareto';
+dist = 'gamma';
 nbins = 50;
 
 % name of distr for title of a fig
-distFig = 'pareto';
+distFig = 'K';
 
 % save (1) or not to save (0) the figures with Titles
 figSaveTitle = 1;
 
 % data path for fig to be saved
-filenameFig = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\figData\pareto\';
+filenameFig = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\figData\K\';
 
 % name of file
-figNameTitle = 'paretoPlT';
+figNameTitle = 'KPlT';
 
 % switcher to the needed fomat for data saving:
 %    to mat if 0; csv and mat if 1, csv if 2
 extChoiseDataset = 0;
 
 %= data path for loading preprocced data
-dataPathSavedData = 'paretoInf';
-dataPathSavedDataAbs = 'paretoAbs';
+dataPathSavedData = 'KInf';
+dataPathSavedDataAbs = 'KAbs';
 %=
 
 % data path for loading original data
-dataPathOrigData = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\training-data-pareto.mat';
+dataPathOrigData = 'C:\Users\lesya\Documents\GitHub\GenerativeCFAR_Detection\training-data-K.mat';
 %%%%%%%%%%%%%%%%
 
 %% Input parameters 
 %%% use saved data or create a new dataset
 if usedOrNew == 1
-    createN_DataSetsFromOneAbsK(dataPathOrigData, difStat,...
+    createN_DataSetsFromOneAbs(dataPathOrigData, difStat,...
             dataPathSavedData, dataPathSavedDataAbs, ...
             extChoiseDataset);
 end % if usedOrNew == 1
@@ -67,7 +67,7 @@ load([dataPathSavedData '.mat'])
 
 for iFile = 1:1%k
     % load a file
-    load([dataPathSavedData name1{k} '_' name2{k} '.mat']);     
+    load([dataPathSavedData name1{iFile} '_' name2{iFile} '.mat']);     
 
     for iPl = 1:dimPl
         % convert tarIn to str

@@ -8,11 +8,17 @@
 %     usedOrNew is load saved data (0) or run new one (1) 
 %     difStat is the increment for different statistics
 %     dist is a distribution: Generalized Pareto (threshold 0),
-%        or Gamma (K-distribution) 
 %     figSaveTitle is to save (1) or not to save (0) the figures with
 %        Titles
 %     filenameFig is the path where to save the figures
 %     figNameTitle is the name of the fig with title 
+%     dataPathOrigData is the path to the dataset
+%     difStat is increment for different statistics
+%     dataPathSavedData is the name of the file where to save information
+%       about the group selection 
+%     dataPathSavedDataAbs is the first part of the name of the file where to save data
+%     extChoiseDataset is switcher to the needed fomat for data saving: 
+%        to mat if 0; csv and mat if 1, csv if 2
 
 close all; clear all;
 
@@ -68,7 +74,7 @@ load([dataPathSavedData '.mat'])
 
 for iFile = 1:k
     % load a file
-    load([dataPathSavedDataAbs name1{k} '_' name2{k} '.mat']);     
+    load([dataPathSavedDataAbs name1{iFile} '_' name2{iFile} '.mat']);     
 
     for iPl = 1:dimPl
         % convert tarIn to str
@@ -107,5 +113,5 @@ for iFile = 1:k
                % gcf means to save current fig
         end % if figSaveTitle == 1
     end % for iPl = 1:dimPl
-
+    clear absData;
 end % iFile = 1:k
