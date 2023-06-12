@@ -5,8 +5,7 @@
 %   use saved data or create a new dataset
 
 %% Input: 
-%     dist is a distribution: normal, or Generalized Pareto (threshold 0),
-%        or Gamma (K-distribution) 
+%     dist is a distribution: normal
 %     figSaveTitle is to save (1) or not to save (0) the figures with
 %        Titles
 %     filenameFig is the path where to save the figures
